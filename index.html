@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jokes</title>
+    <style>
+      #main{
+        width: 60vw;
+        height: 50vh;
+        font-weight: bold;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        border-radius: 20px;
+        background-color:rgba(222, 147, 8, 0.914);
+        box-shadow: 10px 15px 20px rgba(31, 32, 13, 0.5);
+    }
+      h1{
+        margin: 0 auto;
+        text-align: center;
+        margin-top: 60px;
+        margin-bottom: 60px;
+        color:rgb(242, 255, 0);
+        background-color: black ;
+        width: 520px;
+        
+    }
+      #punchline,#setup{
+        text-align: center;
+        display: none;
+        margin: 0 auto;
+
+      }
+      #btn{
+        border-radius: 5px;
+        height: 40px;
+        width: 150px;
+        font-size: large;
+        background-color: rgba(55, 80, 221, 0.944);
+        color:whitesmoke;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        box-shadow: 10px 15px 20px rgba(31, 32, 13, 0.5);
+      }
+      #btn:hover{
+        cursor: pointer;
+        background-color: rgb(13, 13, 233);
+      }
+      body{
+            background-image: url('https://t3.ftcdn.net/jpg/05/71/65/40/360_F_571654023_xLN86tzE1kaM1XRntYZMz0e3J5tqsW90.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed; 
+            font-size: larger;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;        }
+    </style>
+</head>
+<body>
+    <h1>Programming Joke Generator</h1>
+<div id="main">
+
+    <div id="setup"></div>
+    <div id="punchline"></div>
+    <button id="btn" type="button">Generate Joke</button>
+</div>
+<script>
+const setup = document.getElementById("setup");
+const punch = document.getElementById("punchline");
+const btn = document.getElementById("btn");
+function genJoke(){
+    
+fetch('https://official-joke-api.appspot.com/jokes/programming/ten')
+.then((res) => res.json())
+.then((data) =>{
+    setup.style.display='flex';
+    punch.style.display='flex';
+    setup.textContent=data[0].setup;
+    punch.textContent = data[0].punchline;
+    
+   });
+}
+btn.addEventListener("click", genJoke);
+</script>
+</body>
+</html>
