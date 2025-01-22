@@ -13,36 +13,102 @@
       .card-text {
         color: darkblue;
       }
+      #select{
+        margin: 0 auto;
+      }
+      label{
+        margin: 0 auto;
+      }
+      #spinner{
+        display: none;
+        height: 40px;
+        width: 40px;
+        border: 6px solid rgba(128, 128, 128, 0.441);
+        border-top-color:rgb(27, 90, 226);
+        margin: 10px auto;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        from{
+          transform: rotate(0deg);
+        }
+        to{
+          transform: rotate(360deg);
+        }
+      }
     </style>
 </head>
 <body class="bg-warning">
-    <h1 class="text-center bg-dark text-light p-2 m-2 rounded">Programming Joke Generator</h1>
+    <h1 class="text-center bg-primary text-light p-2 m-2 rounded">Random Joke Generator</h1>
+    <div class="container-fluid">
+    <select name="" id="select" class="fs-5 my-3 form-select w-50  text-center fw-bold text-primary">
+      <option value="Select Type" disabled>Select Type</option>
+      <option value="General">General</option>
+      <option value="Knock-Knock">Knock-Knock</option>
+      <option value="Programming">Programming</option>
+      <option value="Dad">Dad</option>
+    </select>
+  </div>
 
     <div id="main" class="text-center container-fluid px-3">
       <div class="card justify-content-center mt-5 p-3 mx-auto" style="max-width: 100%; max-width: 500px;">
-        <span id="quote" class="card-text fs-5">"Why be serious when you can code and laugh? Dive into some programming humor!"</span>
+        <span id="quote" class="card-text fs-5">"A day without laughter is a day wasted." <br>– Charlie Chaplin</span>
         <div id="setup" class="card-text fs-4 fs-md-5 mt-3"></div>
         <div id="punchline" class="card-text fs-5 fs-md-6 mt-3 fw-bold"></div>
       </div>
-      <div class="d-flex justify-content-center">
+      
+      <div id="spinner"></div>
+
+      <div class="text-center">
         <button id="btn" type="button" class="btn btn-primary m-4 fs-4">Generate Joke</button>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>   
 
     <script>
+      const loading = document.getElementById("spinner");
       const setup = document.getElementById("setup");
       const punch = document.getElementById("punchline");
       const btn = document.getElementById("btn");
       const quote = document.getElementById("quote");
-
+      
+      let url = "";
       function genJoke() {
-        fetch('https://official-joke-api.appspot.com/jokes/programming/ten')
+        loading.style.display = "block"
+
+        const selectedType = document.getElementById("select").value;
+        if(selectedType === "Select Type"){
+          alert("please select a Joke Type");
+          return;
+        }
+        if(selectedType === "Programming"){
+          url = "https://official-joke-api.appspot.com/jokes/programming/ten"
+        }
+        else if(selectedType === "General"){
+          url = 'https://official-joke-api.appspot.com/jokes/general/ten';
+        }
+        else if(selectedType === "Knock-Knock"){
+          url = 'https://official-joke-api.appspot.com/jokes/knock-knock/ten';
+        }
+        else if(selectedType === "Dad"){
+          url = 'https://official-joke-api.appspot.com/jokes/dad/ten';
+         }
+
+         fetch(url)
           .then((res) => res.json())
           .then((data) => {
+            loading.style.display = "none";
             quote.style.display = "none";
             setup.textContent = data[0].setup;
             punch.textContent = data[0].punchline;
+          })
+          .catch((err)=>{
+            loading.style.display = "none";
+            quote.style.display = "none";
+            setup.innerHTML = `<h2 class="fw-bold">Error fetching joke</h2>`;
+            punch.textContent = "";
           });
       }
 
