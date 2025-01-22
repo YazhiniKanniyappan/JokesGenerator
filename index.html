@@ -76,7 +76,6 @@
       
       let url = "";
       function genJoke() {
-        loading.style.display = "block"
 
         const selectedType = document.getElementById("select").value;
         if(selectedType === "Select Type"){
@@ -84,6 +83,8 @@
           loading.style.display="none";
           return;
         }
+        loading.style.display = "block"
+
         if(selectedType === "Programming"){
           url = "https://official-joke-api.appspot.com/jokes/programming/ten"
         }
